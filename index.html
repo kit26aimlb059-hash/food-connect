@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#174d38">
+  <meta name="description" content="Food Connect helps communities share surplus food and work toward SDG 2: Zero Hunger.">
+  <title>Food Connect — Save Food, Share Hope</title>
+  <style>
+    :root {
+      --green: #174d38;
+      --green-2: #2f7653;
+      --lime: #d6ed9c;
+      --cream: #f8f6ed;
+      --paper: #fffefa;
+      --ink: #1d2c24;
+      --muted: #68756c;
+      --line: #e6e9df;
+      --orange: #e99645;
+      --red: #c95245;
+      --shadow: 0 18px 48px rgba(27, 55, 39, .09);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; }
+    .container { width: min(1160px, calc(100% - 44px)); margin-inline: auto; }
+    .section { padding: 92px 0; }
+    .section-cream { background: var(--cream); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--green-2); font-size: .76rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 20px; height: 2px; background: var(--orange); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { letter-spacing: -.035em; line-height: 1.12; }
+    h1 { font-size: clamp(2.6rem, 5.6vw, 5rem); margin: 18px 0; max-width: 700px; }
+    h2 { font-size: clamp(2rem, 3.5vw, 3.15rem); margin: 12px 0 18px; }
+    h3 { font-size: 1.2rem; }
+    .section-intro { max-width: 650px; color: var(--muted); font-size: 1.05rem; }
+    .section-head { margin-bottom: 38px; }
+    .section-head.center { text-align: center; }
+    .section-head.center .section-intro { margin-inline: auto; }
+    .btn {
+      border: 0; border-radius: 999px; padding: 13px 22px; display: inline-flex;
+      align-items: center; justify-content: center; gap: 9px; font-weight: 750;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--green); color: white; box-shadow: 0 9px 22px rgba(23, 77, 56, .17); }
+    .btn-primary:hover { background: #103c2b; box-shadow: 0 12px 28px rgba(23, 77, 56, .25); }
+    .btn-lime { background: var(--lime); color: var(--green); }
+    .btn-outline { background: transparent; border: 1px solid #cbd6cc; color: var(--green); }
+    .btn-outline:hover { background: white; }
+    .btn-small { padding: 9px 15px; font-size: .88rem; }
+    .icon { width: 20px; height: 20px; flex: 0 0 auto; display: inline-block; }
+    .top-note { background: var(--green); color: #eaf3e9; text-align: center; padding: 7px 12px; font-size: .78rem; }
+    .top-note strong { color: var(--lime); }
+
+    /* Header and hero */
+    .site-header {
+      position: sticky; top: 0; z-index: 20; background: rgba(255, 254, 250, .94);
+      border-bottom: 1px solid rgba(230, 233, 223, .85); backdrop-filter: blur(14px);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
+    .brand-mark {
+      width: 39px; height: 39px; border-radius: 13px; display: grid; place-items: center;
+      color: var(--green); background: var(--lime);
+    }
+    .brand-name { font-size: 1rem; line-height: 1.05; font-weight: 900; letter-spacing: .04em; color: var(--green); }
+    .brand-name small { display: block; font-size: .56rem; margin-top: 4px; letter-spacing: .14em; color: #718174; }
+    .nav-links { display: flex; align-items: center; gap: clamp(12px, 1.7vw, 24px); }
+    .nav-links a { font-size: .83rem; font-weight: 650; color: #4c5a50; transition: color .2s; }
+    .nav-links a:hover { color: var(--green-2); }
+    .nav-actions { display: flex; align-items: center; gap: 9px; }
+    .nav-actions .btn { padding: 10px 16px; font-size: .84rem; }
+    .menu-toggle { display: none; border: 1px solid var(--line); background: white; color: var(--green); border-radius: 12px; padding: 8px; }
+    .hero { overflow: hidden; position: relative; padding: 65px 0 70px; background: var(--cream); }
+    .hero::after { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; background: #edf2d6; right: -210px; top: -270px; }
+    .hero-grid { display: grid; grid-template-columns: 1.03fr .97fr; gap: 52px; align-items: center; position: relative; z-index: 1; }
+    .hero-copy > p { max-width: 570px; color: #657369; font-size: 1.12rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 27px; }
+    .hero-note { display: flex; gap: 11px; align-items: center; color: #657369; font-size: .88rem; }
+    .avatar-stack { display: flex; padding-left: 5px; }
+    .avatar-stack span { width: 29px; height: 29px; margin-left: -5px; border: 2px solid var(--cream); border-radius: 50%; display: grid; place-items: center; font-size: .76rem; background: #e1bc91; }
+    .avatar-stack span:nth-child(2) { background: #b6d38e; }
+    .avatar-stack span:nth-child(3) { background: #e9aa81; }
+    .avatar-stack span:nth-child(4) { background: #c6d9df; }
+    .hero-art {
+      position: relative; min-height: 410px; border-radius: 38px; overflow: hidden;
+      background: linear-gradient(140deg, #dcebbf 0%, #f5e3bf 55%, #efc693 100%);
+      box-shadow: var(--shadow);
+    }
+    .hero-art::before, .hero-art::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); }
+    .hero-art::before { width: 350px; height: 350px; left: 40px; top: 35px; }
+    .hero-art::after { width: 270px; height: 270px; left: 80px; top: 75px; }
+    .hero-art svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+    .floating-card {
+      position: absolute; z-index: 2; background: rgba(255,255,255,.94); border-radius: 17px;
+      padding: 13px 15px; box-shadow: 0 12px 28px rgba(48, 62, 42, .14); font-size: .8rem;
+    }
+    .floating-card strong { display: block; color: var(--green); font-size: .92rem; }
+    .float-meals { top: 31px; right: 24px; }
+    .float-pickup { bottom: 30px; left: 18px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 45px; }
+    .hero-stat { border-right: 1px solid #dfe4d8; padding-right: 10px; }
+    .hero-stat:last-child { border: 0; }
+    .hero-stat strong { display: block; color: var(--green); font-size: 1.55rem; line-height: 1.1; }
+    .hero-stat span { font-size: .77rem; color: var(--muted); }
+
+    /* Shared cards and section layouts */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius); background: white; padding: 24px; box-shadow: 0 7px 24px rgba(26, 53, 38, .035); }
+    .feature-card { transition: transform .25s ease, box-shadow .25s ease; }
+    .feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .feature-icon { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; background: #edf5df; color: var(--green-2); margin-bottom: 17px; }
+    .card p { color: var(--muted); margin-bottom: 0; }
+    .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: white; display: grid; place-items: center; font-weight: 850; margin-bottom: 20px; }
+    .steps { position: relative; }
+    .steps::before { content: ""; position: absolute; top: 20px; left: 15%; right: 15%; border-top: 1px dashed #b5c5b2; }
+    .steps .card { position: relative; }
+    .sdg-band {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center;
+      border-radius: 30px; padding: 45px; color: white; background: var(--green); overflow: hidden; position: relative;
+    }
+    .sdg-band::after { content: "2"; position: absolute; font-size: 23rem; font-weight: 950; line-height: .8; color: rgba(255,255,255,.05); right: 10px; bottom: -34px; }
+    .sdg-band h2 { max-width: 530px; }
+    .sdg-band p { color: #d3e2d4; max-width: 560px; }
+    .sdg-mark { width: 160px; height: 160px; margin-inline: auto; border-radius: 50%; background: var(--lime); color: var(--green); display: grid; place-items: center; text-align: center; font-weight: 900; transform: rotate(-8deg); box-shadow: 0 14px 36px rgba(0,0,0,.14); }
+    .sdg-mark span { display: block; font-size: 3.4rem; line-height: .85; }
+    .about-grid { display: grid; grid-template-columns: .92fr 1.08fr; gap: 50px; align-items: center; }
+    .about-visual { min-height: 330px; background: #e7efd9; border-radius: 30px; display: grid; place-items: center; overflow: hidden; position: relative; }
+    .about-visual svg { width: min(90%, 450px); }
+    .check-list { display: grid; gap: 14px; padding: 0; list-style: none; margin: 24px 0 0; }
+    .check-list li { display: flex; align-items: flex-start; gap: 10px; color: #536258; }
+    .check { color: var(--green-2); font-weight: 900; }
+
+    /* Dashboards */
+    .dashboard-shell { border: 1px solid var(--line); border-radius: 26px; overflow: hidden; background: white; box-shadow: var(--shadow); }
+    .dashboard-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 25px 28px; border-bottom: 1px solid var(--line); }
+    .dashboard-top h3 { margin: 0 0 5px; }
+    .dashboard-top p { color: var(--muted); margin: 0; font-size: .9rem; }
+    .demo-badge { background: #fff2dc; color: #835313; border-radius: 999px; padding: 8px 12px; font-weight: 750; font-size: .75rem; white-space: nowrap; }
+    .dash-tabs { display: flex; gap: 7px; padding: 15px 25px 0; overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .dash-tab { border: 0; border-bottom: 2px solid transparent; background: transparent; padding: 12px 13px; white-space: nowrap; color: var(--muted); font-weight: 750; }
+    .dash-tab.active { color: var(--green); border-color: var(--green); }
+    .dash-panel { padding: 26px; display: none; }
+    .dash-panel.active { display: block; animation: appear .28s ease both; }
+    @keyframes appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: #405047; font-size: .83rem; font-weight: 750; }
+    .field input, .field select, .field textarea {
+      width: 100%; min-height: 47px; border: 1px solid #dce3da; border-radius: 12px;
+      background: #fff; padding: 11px 13px; color: var(--ink); outline: none; transition: border .2s, box-shadow .2s;
+    }
+    .field textarea { min-height: 112px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green-2); box-shadow: 0 0 0 3px rgba(47, 118, 83, .11); }
+    .form-hint { color: var(--muted); font-size: .77rem; }
+    .form-actions { margin-top: 19px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .notice { margin: 16px 0 0; border-radius: 12px; padding: 11px 14px; font-size: .87rem; display: none; }
+    .notice.show { display: block; }
+    .notice.success { color: #205b3b; background: #eaf5e9; }
+    .notice.error { color: #9c3d32; background: #fff0ec; }
+    .subsection-title { margin: 30px 0 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .subsection-title h3 { margin: 0; }
+    .record-list { display: grid; gap: 12px; }
+    .record { border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
+    .record-main { min-width: 0; }
+    .record-title { font-weight: 850; margin: 0 0 5px; }
+    .record-meta { color: var(--muted); font-size: .82rem; display: flex; gap: 8px 13px; flex-wrap: wrap; }
+    .record-side { text-align: right; display: grid; justify-items: end; gap: 8px; }
+    .pill { border-radius: 999px; padding: 5px 10px; font-size: .72rem; font-weight: 800; background: #edf2e8; color: #42604a; white-space: nowrap; }
+    .pill.pending { color: #8a5d19; background: #fff3da; }
+    .pill.accepted, .pill.delivered { color: #23603c; background: #e5f4e7; }
+    .pill.rejected { color: #984338; background: #fce9e5; }
+    .pill.urgent { color: #a63c30; background: #ffebe6; }
+    .empty-state { text-align: center; padding: 30px 18px; border: 1px dashed #cbd6ca; border-radius: 16px; color: var(--muted); }
+    .empty-state strong { display: block; color: var(--green); margin-bottom: 5px; }
+    .match-card { border: 1px solid var(--line); border-radius: 16px; padding: 17px; display: grid; grid-template-columns: 1fr auto; gap: 14px; }
+    .match-score { min-width: 86px; text-align: center; border-radius: 14px; padding: 10px; align-self: start; color: var(--green); background: #eef5e5; }
+    .match-score strong { font-size: 1.35rem; display: block; }
+    .match-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .reason { color: #526553; border-radius: 999px; padding: 4px 8px; background: #f2f4ee; font-size: .72rem; }
+    .urgent-record { border-color: #efc2b8; background: #fffaf8; }
+    .task-controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .impact-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .impact-card { padding: 22px; border: 1px solid var(--line); background: white; border-radius: 19px; }
+    .impact-card .impact-icon { color: var(--green-2); background: #edf5df; width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 15px; }
+    .impact-card strong { display: block; font-size: 1.85rem; color: var(--green); line-height: 1.1; }
+    .impact-card span { font-size: .82rem; color: var(--muted); }
+    .impact-lower { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 22px; }
+    .progress-row { margin: 16px 0; }
+    .progress-label { display: flex; justify-content: space-between; gap: 10px; font-size: .84rem; margin-bottom: 7px; }
+    .progress-track { height: 9px; background: #edf0e9; border-radius: 99px; overflow: hidden; }
+    .progress-fill { width: var(--width); height: 100%; border-radius: inherit; background: linear-gradient(90deg, #2f7653, #a4ca74); }
+    .sample-label { font-size: .74rem; color: var(--muted); margin-top: 18px; }
+    .contact-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; }
+    .contact-aside { border-radius: 24px; background: var(--green); color: white; padding: 30px; }
+    .contact-aside p { color: #d3e2d4; }
+    .contact-item { display: flex; gap: 12px; align-items: center; margin-top: 18px; color: #edf5e9; font-size: .9rem; }
+    footer { background: #123b2b; color: #dce8dd; padding: 36px 0; }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    footer .brand-name { color: white; }
+    footer .brand-name small { color: #b2c8b7; }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: .82rem; }
+    .footer-note { color: #a9c1ae; font-size: .77rem; margin: 18px 0 0; }
+    .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; padding: 20px; background: rgba(12, 31, 22, .58); }
+    .modal-backdrop.open { display: grid; animation: appear .2s ease both; }
+    .modal { width: min(460px, 100%); background: var(--paper); padding: 29px; border-radius: 23px; box-shadow: 0 25px 80px rgba(0,0,0,.25); position: relative; }
+    .modal-close { position: absolute; top: 13px; right: 15px; border: 0; background: transparent; font-size: 1.5rem; color: var(--muted); }
+    .modal-warning { margin: 17px 0 0; padding: 12px; border-radius: 12px; color: #7a5a22; background: #fff3dc; font-size: .78rem; }
+    .toast { position: fixed; right: 22px; bottom: 22px; z-index: 80; max-width: min(410px, calc(100% - 44px)); padding: 14px 18px; border-radius: 14px; background: var(--green); color: white; box-shadow: var(--shadow); opacity: 0; transform: translateY(15px); pointer-events: none; transition: .25s; }
+    .toast.show { opacity: 1; transform: none; }
+    .toast.error { background: #9c3d32; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 1020px) {
+      .nav-links { gap: 11px; }
+      .nav-links a { font-size: .76rem; }
+      .nav-actions .btn { padding: 9px 12px; }
+      .hero-grid { gap: 30px; }
+    }
+    @media (max-width: 850px) {
+      .menu-toggle { display: inline-flex; }
+      .nav { min-height: 68px; }
+      .nav-links {
+        display: none; position: absolute; top: 68px; left: 0; right: 0; padding: 14px 22px 20px;
+        background: var(--paper); border-bottom: 1px solid var(--line); box-shadow: 0 14px 20px rgba(0,0,0,.06);
+        align-items: stretch; flex-direction: column; gap: 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 11px 0; font-size: .92rem; }
+      .nav-actions { margin-left: auto; }
+      .hero-grid, .about-grid, .sdg-band, .contact-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 34px; }
+      .hero-art { min-height: 360px; }
+      .sdg-band { padding: 35px; }
+      .sdg-mark { width: 130px; height: 130px; }
+      .sdg-mark span { font-size: 2.8rem; }
+      .about-visual { min-height: 275px; }
+      .impact-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .container { width: min(100% - 30px, 500px); }
+      .section { padding: 67px 0; }
+      .top-note { font-size: .7rem; }
+      .nav-actions .btn-outline { display: none; }
+      .nav-actions .btn { padding: 9px 13px; }
+      .brand-name { font-size: .9rem; }
+      .hero { padding: 43px 0 50px; }
+      h1 { font-size: clamp(2.5rem, 12vw, 3.7rem); }
+      .hero-copy > p { font-size: 1rem; }
+      .hero-art { min-height: 290px; border-radius: 26px; }
+      .hero-art::before { width: 250px; height: 250px; top: 22px; left: 8%; }
+      .hero-art::after { width: 190px; height: 190px; top: 52px; left: calc(8% + 30px); }
+      .float-meals { top: 16px; right: 12px; }
+      .float-pickup { bottom: 13px; left: 10px; }
+      .hero-stats { margin-top: 30px; }
+      .hero-stat strong { font-size: 1.25rem; }
+      .hero-stat span { font-size: .69rem; }
+      .grid-3, .grid-2, .form-grid, .impact-lower { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .sdg-band { padding: 27px 22px; }
+      .sdg-band::after { font-size: 15rem; }
+      .dashboard-top { padding: 20px; align-items: flex-start; flex-direction: column; }
+      .dash-tabs { padding-inline: 14px; }
+      .dash-panel { padding: 18px 15px; }
+      .record { flex-direction: column; }
+      .record-side { text-align: left; justify-items: start; }
+      .match-card { grid-template-columns: 1fr; }
+      .match-score { justify-self: start; }
+      .impact-cards { gap: 10px; }
+      .impact-card { padding: 16px; }
+      .impact-card strong { font-size: 1.5rem; }
+      .footer-row { align-items: flex-start; flex-direction: column; }
+      .contact-aside { padding: 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-note"><strong>SDG 2 · ZERO HUNGER</strong> &nbsp; A community-powered way to make good food go further.</div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Food Connect home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21c-5.3-2.7-8-6.1-8-10.2A4.4 4.4 0 0 1 12 8a4.4 4.4 0 0 1 8 2.8C20 14.9 17.3 18.3 12 21Z"/><path d="M12 8c0-3 1.5-5 4-6"/></svg>
+        </span>
+        <span class="brand-name">FOOD CONNECT<small>SAVE FOOD · SHARE HOPE</small></span>
+      </a>
+      <nav class="nav-links" id="mainNav" aria-label="Main navigation">
+        <a href="#home">Home</a><a href="#about">About</a><a href="#how">How it works</a>
+        <a href="#donate">Donate food</a><a href="#find">Find food</a><a href="#impact">Impact</a><a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-outline" type="button" data-auth="login">Log in</button>
+        <button class="btn btn-primary" type="button" data-auth="register">Join us</button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Good food deserves a second chance</span>
+          <h1>Don't Waste Food,<br><span style="color:var(--green-2)">Share Hope.</span></h1>
+          <p>Food Connect brings restaurants, event hosts, NGOs and volunteers together to redirect surplus food to neighbors who need it.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#donate">Donate food <span aria-hidden="true">→</span></a>
+            <a class="btn btn-lime" href="#find">Find food <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="hero-note">
+            <span class="avatar-stack" aria-hidden="true"><span>🥬</span><span>🍎</span><span>🥖</span><span>🤝</span></span>
+            <span>Small acts. Shared meals. Stronger communities.</span>
+          </div>
+          <div class="hero-stats" aria-label="Sample project statistics">
+            <div class="hero-stat"><strong>2.4k+</strong><span>Meals shared*</span></div>
+            <div class="hero-stat"><strong>38</strong><span>Community partners*</span></div>
+            <div class="hero-stat"><strong>1.8 t</strong><span>Food redirected*</span></div>
+          </div>
+        </div>
+        <div class="hero-art" role="img" aria-label="Illustration of fresh donated food ready to share">
+          <div class="floating-card float-meals"><strong>Fresh food, shared</strong>From local kitchens to local tables</div>
+          <div class="floating-card float-pickup"><strong>One neighborhood at a time</strong>Donor → NGO → Volunteer</div>
+          <svg viewBox="0 0 620 440" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <ellipse cx="318" cy="359" rx="191" ry="29" fill="#6F8E56" opacity=".22"/>
+            <path d="M168 261c22-49 61-75 151-77 94-2 137 30 157 81l-17 84H184l-16-88Z" fill="#E9B86F"/>
+            <path d="M182 276h278l-13 67H194l-12-67Z" fill="#C77B43"/>
+            <path d="M212 279c31 14 67 19 111 19 50 0 91-6 129-20" stroke="#F8DDAA" stroke-width="9" stroke-linecap="round"/>
+            <path d="M211 259c8-50 47-91 92-97 26-4 49 9 57 30 9-27 37-41 64-31 31 12 47 50 38 88" fill="#5E9A59"/>
+            <path d="M249 202c-3-41-22-70-53-77 1 36 18 64 53 77Z" fill="#7DAD54"/>
+            <path d="M297 168c-9-42 2-75 34-94 16 32 7 67-34 94Z" fill="#40804B"/>
+            <path d="M359 191c9-44 35-68 70-67-9 37-33 61-70 67Z" fill="#83B755"/>
+            <circle cx="244" cy="260" r="36" fill="#E96F4E"/><path d="M243 224c2-13 10-19 20-20" stroke="#49753E" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="382" cy="254" r="38" fill="#F2C64D"/><path d="M381 216c-2-12 5-19 15-23" stroke="#49753E" stroke-width="6" stroke-linecap="round"/>
+            <path d="M302 229c17-17 41-15 51 3 10 18-2 45-27 55-25-10-37-37-24-58Z" fill="#9BCB66"/>
+            <path d="M322 231c-5 17-4 34 4 52" stroke="#5B934D" stroke-width="4" stroke-linecap="round"/>
+            <path d="M147 145c15-20 41-26 61-17-12 23-34 34-61 17Z" fill="#F5D879"/>
+            <path d="M468 190c13-23 37-32 60-25-9 25-29 39-60 25Z" fill="#E96F4E"/>
+            <path d="M494 305c23-7 46 3 56 24-25 9-48 1-56-24Z" fill="#81A949"/>
+            <circle cx="151" cy="214" r="7" fill="#FFF6DD"/><circle cx="490" cy="115" r="6" fill="#FFF6DD"/><circle cx="119" cy="294" r="5" fill="#FFF6DD"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div class="about-visual" aria-hidden="true">
+          <svg viewBox="0 0 470 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="234" cy="158" r="119" fill="#D4E5B6"/>
+            <path d="M104 220h266l-18 50H123l-19-50Z" fill="#C8844D"/>
+            <path d="M130 218c16-34 44-50 102-50s87 16 104 50" fill="#E9BB77"/>
+            <path d="M156 208c-4-36 13-65 42-69 19-3 31 9 34 25 7-25 30-35 49-25 23 12 26 42 17 70" fill="#5B9855"/>
+            <circle cx="173" cy="210" r="29" fill="#E87350"/><circle cx="281" cy="207" r="31" fill="#F0C54E"/>
+            <path d="M226 200c17-18 38-15 45 4 6 16-5 34-24 42-21-9-31-29-21-46Z" fill="#A4CB6B"/>
+            <path d="M225 95c-6-29 4-51 26-64 12 22 5 45-26 64Z" fill="#4B854B"/>
+            <path d="M148 116c-25-16-31-38-21-61 24 13 34 33 21 61Z" fill="#83B65D"/>
+            <path d="M311 125c18-25 42-32 65-19-13 25-35 35-65 19Z" fill="#82A951"/>
+            <path d="M75 263c-18-17-19-39-5-57 18 15 24 36 5 57ZM376 158c18-20 39-23 58-10-15 19-34 27-58 10Z" fill="#E8B95A"/>
+            <path d="M83 281h302" stroke="#719060" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <span class="eyebrow">Why Food Connect</span>
+          <h2>Make surplus food part of the solution.</h2>
+          <p class="section-intro">Every day, good food is left over while many people face food insecurity. We make it easier for communities to turn that gap into a connection.</p>
+          <ul class="check-list">
+            <li><span class="check">✓</span><span><strong>Purpose:</strong> reduce avoidable food waste and make sharing simpler.</span></li>
+            <li><span class="check">✓</span><span><strong>Vision:</strong> a future where every community can access nourishing food.</span></li>
+            <li><span class="check">✓</span><span><strong>Mission:</strong> connect food donors, trusted NGOs and willing volunteers.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream" id="how">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Simple by design</span><h2>Good food moves in three steps.</h2>
+          <p class="section-intro">A clear, community-led flow helps surplus food find the people and organizations that can use it.</p>
+        </div>
+        <div class="grid-3 steps">
+          <article class="card feature-card"><div class="step-num">1</div><h3>Donors list surplus food</h3><p>Restaurants, hotels and event hosts share food details, portions and a safe pickup window.</p></article>
+          <article class="card feature-card"><div class="step-num">2</div><h3>NGOs request a match</h3><p>Local organizations review available listings and request food that fits their community's needs.</p></article>
+          <article class="card feature-card"><div class="step-num">3</div><h3>Volunteers coordinate</h3><p>Volunteers can take a pickup task and update its progress through the demonstration workflow.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sdg">
+      <div class="container">
+        <div class="sdg-band">
+          <div>
+            <span class="eyebrow" style="color:var(--lime)">A shared global goal</span>
+            <h2>SDG 2: Zero Hunger</h2>
+            <p>The United Nations Sustainable Development Goal 2 calls for ending hunger, achieving food security, improving nutrition and promoting sustainable agriculture. Food Connect supports this goal at a local level by helping usable surplus food reach community organizations.</p>
+            <a class="btn btn-lime" href="#impact">See our impact approach <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="sdg-mark" aria-label="Goal 2: Zero Hunger"><div><span>2</span>ZERO<br>HUNGER</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream" id="donate">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Food donor dashboard</span><h2>Share what you can.</h2>
+          <p class="section-intro">List safe, surplus food for a local organization. Your submission is saved in this browser for the prototype.</p>
+        </div>
+        <div class="dashboard-shell">
+          <div class="dashboard-top">
+            <div><h3>Donation workspace</h3><p>Post a food listing and track its request status.</p></div>
+            <span class="demo-badge">Prototype · browser storage</span>
+          </div>
+          <div class="dash-tabs" role="tablist" aria-label="Dashboard views">
+            <button type="button" class="dash-tab" data-panel="donorPanel" role="tab">Food donor</button>
+            <button type="button" class="dash-tab" data-panel="ngoPanel" role="tab">NGO / find food</button>
+            <button type="button" class="dash-tab" data-panel="volunteerPanel" role="tab">Volunteer</button>
+            <button type="button" class="dash-tab" data-panel="matchPanel" role="tab">Smart matching</button>
+          </div>
+          <div class="dash-panel" id="donorPanel" role="tabpanel">
+            <form id="donationForm">
+              <div class="form-grid">
+                <div class="field"><label for="donorName">Donor name *</label><input id="donorName" name="donorName" required maxlength="80" placeholder="Restaurant or contact name"></div>
+                <div class="field"><label for="foodName">Food name *</label><input id="foodName" name="foodName" required maxlength="80" placeholder="e.g. Vegetable rice bowls"></div>
+                <div class="field"><label for="foodCategory">Food category *</label><select id="foodCategory" name="category" required><option value="">Choose a category</option><option>Veg</option><option>Non-Veg</option><option>Fruits</option><option>Bakery</option><option>Packed Food</option><option>Others</option></select></div>
+                <div class="field"><label for="quantity">Quantity / portions *</label><input id="quantity" name="quantity" type="number" min="1" max="10000" required placeholder="e.g. 25"></div>
+                <div class="field"><label for="preparedAt">Prepared date and time *</label><input id="preparedAt" name="preparedAt" type="datetime-local" required></div>
+                <div class="field"><label for="pickupDeadline">Pickup deadline *</label><input id="pickupDeadline" name="deadline" type="datetime-local" required></div>
+                <div class="field"><label for="pickupLocation">Pickup location *</label><input id="pickupLocation" name="location" required maxlength="120" placeholder="Area, city"></div>
+                <div class="field"><label for="contactDetails">Contact details *</label><input id="contactDetails" name="contact" required maxlength="100" placeholder="Phone or email"></div>
+              </div>
+              <p class="form-hint" style="margin:14px 0 0">Only list food handled and stored safely. Coordinate directly with the receiving organization about dietary and handling details.</p>
+              <div class="form-actions"><button class="btn btn-primary" type="submit">Submit donation <span aria-hidden="true">→</span></button></div>
+              <div class="notice" id="donationNotice" role="status" aria-live="polite"></div>
+            </form>
+            <div class="subsection-title"><h3>Your donation history</h3><span class="form-hint">Includes sample listings and this browser's submissions</span></div>
+            <div class="record-list" id="donorHistory"></div>
+          </div>
+          <div class="dash-panel" id="ngoPanel" role="tabpanel">
+            <p class="section-intro" style="font-size:.92rem;margin-bottom:18px">Review available listings and request food for your organization. A listing can only be claimed once in this shared prototype.</p>
+            <div class="field" style="max-width:390px"><label for="ngoIdentity">Your NGO / organization name</label><input id="ngoIdentity" maxlength="80" value="Community NGO" placeholder="Organization name"></div>
+            <div class="subsection-title"><h3>Available food</h3><span class="form-hint" id="availableCount"></span></div>
+            <div class="record-list" id="availableDonations"></div>
+            <div class="subsection-title"><h3>Previously requested</h3></div>
+            <div class="record-list" id="ngoHistory"></div>
+          </div>
+          <div class="dash-panel" id="volunteerPanel" role="tabpanel">
+            <p class="section-intro" style="font-size:.92rem;margin-bottom:18px">Pickup tasks appear after an NGO requests a listing. Accept a task and record progress for this demo only.</p>
+            <div class="field" style="max-width:390px"><label for="volunteerIdentity">Volunteer name</label><input id="volunteerIdentity" maxlength="80" value="Community Volunteer" placeholder="Your name"></div>
+            <div class="subsection-title"><h3>Pickup tasks</h3></div>
+            <div class="record-list" id="availableTasks"></div>
+            <div class="subsection-title"><h3>Your task history</h3></div>
+            <div class="record-list" id="volunteerHistory"></div>
+          </div>
+          <div class="dash-panel" id="matchPanel" role="tabpanel">
+            <p class="section-intro" style="font-size:.92rem;margin-bottom:18px">Rule-based prototype simulation: compares area, quantity, category and urgency. Scores and matches are illustrative, not AI predictions.</p>
+            <div class="record-list" id="matchResults"></div>
+            <p class="form-hint" style="margin-top:17px">Future enhancement: evaluate an AI-based matching service after validating data quality, consent and community needs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="impact">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Impact dashboard</span><h2>Every shared meal adds up.</h2>
+          <p class="section-intro">An example of the community impact Food Connect aims to support.</p>
+        </div>
+        <div class="impact-cards" id="impactCards">
+          <article class="impact-card"><div class="impact-icon">🍲</div><strong>2,460</strong><span>Meals shared</span></article>
+          <article class="impact-card"><div class="impact-icon">🥗</div><strong>1.8 t</strong><span>Food redirected</span></article>
+          <article class="impact-card"><div class="impact-icon">🤝</div><strong>38</strong><span>NGOs connected</span></article>
+          <article class="impact-card"><div class="impact-icon">🚲</div><strong>186</strong><span>Successful deliveries*</span></article>
+        </div>
+        <div class="impact-lower">
+          <article class="card">
+            <h3>Community goals</h3>
+            <p>Illustrative progress indicators for a demonstration project.</p>
+            <div class="progress-row"><div class="progress-label"><span>Food listings shared</span><strong>72%</strong></div><div class="progress-track"><div class="progress-fill" style="--width:72%"></div></div></div>
+            <div class="progress-row"><div class="progress-label"><span>Local partners onboarded</span><strong>54%</strong></div><div class="progress-track"><div class="progress-fill" style="--width:54%"></div></div></div>
+            <div class="progress-row"><div class="progress-label"><span>Pickup coordination</span><strong>81%</strong></div><div class="progress-track"><div class="progress-fill" style="--width:81%"></div></div></div>
+            <p class="sample-label">Progress bars are sample demonstration values, not verified outcomes.</p>
+          </article>
+          <article class="card">
+            <h3>Prototype activity</h3>
+            <p>Live totals from listings saved in this browser session.</p>
+            <div class="progress-row"><div class="progress-label"><span>Food listings created</span><strong id="actualDonations">0</strong></div><div class="progress-track"><div class="progress-fill" id="actualDonationBar" style="--width:0%"></div></div></div>
+            <div class="progress-row"><div class="progress-label"><span>Portions listed</span><strong id="actualPortions">0</strong></div><div class="progress-track"><div class="progress-fill" id="actualPortionBar" style="--width:0%"></div></div></div>
+            <p class="sample-label">Actual browser records only. Seeded sample listings are excluded; shared storage is local to this browser.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream" id="contact">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow">Let's work together</span><h2>Good things start with a hello.</h2><p class="section-intro">Interested in joining as a donor, NGO or volunteer? Send a note to the Food Connect demo team.</p></div>
+        <div class="contact-grid">
+          <aside class="contact-aside">
+            <h3>Build a more connected food community.</h3>
+            <p>This prototype is a starting point for local collaboration. Reach out with an idea, a question or an offer to help.</p>
+            <div class="contact-item"><span>✉</span><span>hello@foodconnect.example</span></div>
+            <div class="contact-item"><span>⌖</span><span>Community-first · Local impact</span></div>
+          </aside>
+          <div class="card">
+            <form id="contactForm">
+              <div class="form-grid">
+                <div class="field"><label for="contactName">Name *</label><input id="contactName" name="name" required maxlength="80" placeholder="Your name"></div>
+                <div class="field"><label for="contactEmail">Email *</label><input id="contactEmail" name="email" type="email" required maxlength="120" placeholder="you@example.com"></div>
+                <div class="field full"><label for="contactMessage">Message *</label><textarea id="contactMessage" name="message" required maxlength="1000" placeholder="How would you like to get involved?"></textarea></div>
+              </div>
+              <div class="form-actions"><button class="btn btn-primary" type="submit">Send message <span aria-hidden="true">→</span></button></div>
+              <div class="notice" id="contactNotice" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">♡</span><span class="brand-name">FOOD CONNECT<small>SAVE FOOD · SHARE HOPE</small></span></a>
+        <div class="footer-links"><a href="#about">About</a><a href="#how">How it works</a><a href="#sdg">SDG 2</a><a href="#contact">Contact</a></div>
+      </div>
+      <p class="footer-note">A frontend-only demonstration. Sample statistics are illustrative; no real delivery or donation confirmations are made.</p>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal">
+      <button class="modal-close" type="button" id="closeAuth" aria-label="Close dialog">×</button>
+      <span class="eyebrow">Welcome to Food Connect</span>
+      <h2 id="authTitle" style="font-size:2rem">Join the community</h2>
+      <p class="section-intro" id="authDescription" style="font-size:.9rem">Choose a role to open the matching dashboard.</p>
+      <form id="authForm">
+        <div class="form-grid">
+          <div class="field full" id="authNameField"><label for="authName">Name / organization</label><input id="authName" maxlength="80" placeholder="Your name"></div>
+          <div class="field full"><label for="authEmail">Email</label><input id="authEmail" type="email" required maxlength="120" placeholder="you@example.com"></div>
+          <div class="field full"><label for="authRole">I am a</label><select id="authRole" required><option value="donor">Food Donor</option><option value="ngo">NGO</option><option value="volunteer">Volunteer</option></select></div>
+        </div>
+        <div class="modal-warning">Frontend demonstration only. No account is created, and this interface does not provide authentication or real account security.</div>
+        <div class="form-actions"><button class="btn btn-primary" type="submit" id="authSubmit">Continue to dashboard</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+    // Sample listings make the prototype useful on first visit; they are marked and excluded from live impact totals.
+    const STORAGE_KEY = "foodConnectPrototype_v1";
+    const sampleDonations = [
+      { id: "sample-1", donor: "Green Table Kitchen", food: "Seasonal vegetable bowls", category: "Veg", quantity: 24, preparedAt: "", location: "Indiranagar, Bengaluru", deadline: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(), contact: "demo donor", status: "available", sample: true },
+      { id: "sample-2", donor: "Sunrise Bakehouse", food: "Fresh bread & rolls", category: "Bakery", quantity: 18, preparedAt: "", location: "Koramangala, Bengaluru", deadline: new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString(), contact: "demo donor", status: "available", sample: true },
+      { id: "sample-3", donor: "Harvest Events", food: "Seasonal fruit boxes", category: "Fruits", quantity: 32, preparedAt: "", location: "Indiranagar, Bengaluru", deadline: new Date(Date.now() + 90 * 60 * 1000).toISOString(), contact: "demo donor", status: "available", sample: true }
+    ];
+    const ngos = [
+      { name: "Community NGO", area: "Indiranagar", capacity: 40, categories: ["Veg", "Fruits", "Bakery", "Packed Food"] },
+      { name: "Hope Kitchen", area: "Koramangala", capacity: 30, categories: ["Veg", "Non-Veg", "Bakery", "Others"] },
+      { name: "Nourish Network", area: "Bengaluru", capacity: 80, categories: ["Veg", "Non-Veg", "Fruits", "Bakery", "Packed Food", "Others"] }
+    ];
+    const taskSteps = ["Task Accepted", "Pickup in Progress", "Picked Up", "Delivery in Progress", "Delivered"];
+    let activeRole = "ngo";
+    let activeName = "Community NGO";
+    let authMode = "register";
+    let toastTimer;
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && Array.isArray(parsed.donations) && Array.isArray(parsed.tasks)) return parsed;
+          throw new Error("Saved prototype data has an unexpected format.");
+        }
+        return { donations: sampleDonations, tasks: [] };
+      } catch (error) {
+        console.error("Could not load Food Connect data:", error);
+        return { donations: sampleDonations, tasks: [], storageError: true };
+      }
+    }
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        return true;
+      } catch (error) {
+        console.error("Could not save Food Connect data:", error);
+        showToast("Could not save data in this browser. Check storage permissions and try again.", "error");
+        return false;
+      }
+    }
+    function showToast(message, type) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "toast show" + (type === "error" ? " error" : "");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 4200);
+    }
+    function showNotice(id, message, type) {
+      const notice = document.getElementById(id);
+      notice.textContent = message;
+      notice.className = "notice show " + type;
+    }
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+    }
+    function formatDate(value) {
+      if (!value) return "Not specified";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? "Not specified" : date.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+    }
+    function isUrgent(donation) {
+      const time = new Date(donation.deadline).getTime() - Date.now();
+      return Number.isFinite(time) && time >= 0 && time < 3 * 60 * 60 * 1000;
+    }
+    function donationStatus(donation) {
+      return donation.request ? donation.request.status : donation.status;
+    }
+    function badge(status) {
+      const style = status.toLowerCase().replaceAll(" ", "-");
+      return `<span class="pill ${escapeHTML(style)}">${escapeHTML(status)}</span>`;
+    }
+    function emptyState(title, text) {
+      return `<div class="empty-state"><strong>${escapeHTML(title)}</strong>${escapeHTML(text)}</div>`;
+    }
+    function donationCard(d, showDonor, action) {
+      const urgent = isUrgent(d);
+      const status = d.request ? `Requested · ${d.request.status}` : (d.status === "available" ? "Available" : d.status);
+      return `<article class="record ${urgent ? "urgent-record" : ""}">
+        <div class="record-main"><p class="record-title">${escapeHTML(d.food)} ${urgent ? '<span class="pill urgent">Urgent pickup</span>' : ""}</p>
+          <div class="record-meta"><span>${escapeHTML(d.category)}</span><span>${Number(d.quantity) || 0} portions</span><span>⌖ ${escapeHTML(d.location)}</span><span>Pickup by ${escapeHTML(formatDate(d.deadline))}</span>${showDonor ? `<span>Donor: ${escapeHTML(d.donor)}</span>` : ""}</div>
+        </div><div class="record-side">${badge(status)}${action || ""}</div>
+      </article>`;
+    }
+    function renderDonor() {
+      const records = state.donations.filter(d => !d.sample);
+      document.getElementById("donorHistory").innerHTML = records.length
+        ? records.slice().reverse().map(d => donationCard(d, false)).join("")
+        : emptyState("No donations yet", "Your food listings will appear here after you submit the form.");
+      const portions = records.reduce((sum, d) => sum + (Number(d.quantity) || 0), 0);
+      document.getElementById("actualDonations").textContent = String(records.length);
+      document.getElementById("actualPortions").textContent = String(portions);
+      document.getElementById("actualDonationBar").style.setProperty("--width", Math.min(100, records.length * 10) + "%");
+      document.getElementById("actualPortionBar").style.setProperty("--width", Math.min(100, portions) + "%");
+    }
+    function renderNGO() {
+      const available = state.donations.filter(d => d.status === "available" && !d.request);
+      document.getElementById("availableCount").textContent = `${available.length} listing${available.length === 1 ? "" : "s"}`;
+      document.getElementById("availableDonations").innerHTML = available.length
+        ? available.map(d => donationCard(d, true, `<button class="btn btn-primary btn-small" type="button" data-request="${escapeHTML(d.id)}">Request food</button>`)).join("")
+        : emptyState("No food available right now", "New donor listings will show up here automatically.");
+      const requested = state.donations.filter(d => d.request && d.request.ngo === activeName);
+      document.getElementById("ngoHistory").innerHTML = requested.length
+        ? requested.slice().reverse().map(d => donationCard(d, true)).join("")
+        : emptyState("No requests yet", "Food you request for your organization will appear here.");
+    }
+    function renderVolunteer() {
+      const tasks = state.tasks;
+      const available = tasks.filter(task => !task.volunteer);
+      const active = tasks.filter(task => task.volunteer === activeName);
+      document.getElementById("availableTasks").innerHTML = available.length ? available.map(task => {
+        const d = state.donations.find(item => item.id === task.donationId);
+        if (!d) return "";
+        return `<article class="record"><div class="record-main"><p class="record-title">${escapeHTML(d.food)} · ${Number(d.quantity) || 0} portions</p><div class="record-meta"><span>Pickup: ${escapeHTML(d.location)}</span><span>Deliver to: ${escapeHTML(task.destination)}</span><span>By ${escapeHTML(formatDate(d.deadline))}</span></div></div><div class="record-side">${badge("Available")}<button class="btn btn-primary btn-small" type="button" data-accept="${escapeHTML(task.id)}">Accept task</button></div></article>`;
+      }).join("") : emptyState("No pickup tasks yet", "Tasks are created when an NGO requests an available donation.");
+      document.getElementById("volunteerHistory").innerHTML = active.length ? active.slice().reverse().map(task => {
+        const d = state.donations.find(item => item.id === task.donationId);
+        if (!d) return "";
+        const current = task.status || taskSteps[0];
+        const nextIndex = taskSteps.indexOf(current) + 1;
+        const control = nextIndex < taskSteps.length
+          ? `<button class="btn btn-outline btn-small" type="button" data-advance="${escapeHTML(task.id)}">${escapeHTML(taskSteps[nextIndex])}</button>`
+          : "";
+        return `<article class="record"><div class="record-main"><p class="record-title">${escapeHTML(d.food)} · ${Number(d.quantity) || 0} portions</p><div class="record-meta"><span>Pickup: ${escapeHTML(d.location)}</span><span>Deliver to: ${escapeHTML(task.destination)}</span><span>Volunteer: ${escapeHTML(task.volunteer)}</span></div></div><div class="record-side">${badge(current)}<div class="task-controls">${control}</div></div></article>`;
+      }).join("") : emptyState("No accepted tasks", "Accept an available pickup task to track it here.");
+    }
+    function matchFor(donation, ngo) {
+      let score = 0;
+      const reasons = [];
+      const location = donation.location.toLowerCase();
+      if (location.includes(ngo.area.toLowerCase()) || ngo.area.toLowerCase().includes(location.split(",")[0].trim())) {
+        score += 40; reasons.push("Nearby area");
+      } else if (location.includes("bengaluru") && ngo.area === "Bengaluru") {
+        score += 24; reasons.push("Same city");
+      } else if (ngo.area === "Bengaluru") {
+        score += 15; reasons.push("City-level match");
+      }
+      const amount = Number(donation.quantity) || 0;
+      if (amount <= ngo.capacity) { score += 25; reasons.push("Fits stated capacity"); }
+      else if (amount <= ngo.capacity * 1.5) { score += 12; reasons.push("Near stated capacity"); }
+      if (ngo.categories.includes(donation.category)) { score += 20; reasons.push("Category accepted"); }
+      const remaining = new Date(donation.deadline).getTime() - Date.now();
+      if (remaining > 0 && remaining < 3 * 60 * 60 * 1000) { score += 15; reasons.push("Urgent pickup window"); }
+      else if (remaining > 0) { score += 8; reasons.push("Pickup window available"); }
+      return { ngo, score: Math.min(100, score), reasons };
+    }
+    function renderMatches() {
+      const available = state.donations.filter(d => d.status === "available" && !d.request);
+      const root = document.getElementById("matchResults");
+      if (!available.length) { root.innerHTML = emptyState("No available food to match", "New donations will be compared with the example NGO profiles."); return; }
+      root.innerHTML = available.map(d => {
+        const ranked = ngos.map(ngo => matchFor(d, ngo)).sort((a, b) => b.score - a.score);
+        const best = ranked[0];
+        const alternatives = ranked.slice(1).map(item => `${item.ngo.name} (${item.score}%)`).join(" · ");
+        return `<article class="match-card ${isUrgent(d) ? "urgent-record" : ""}">
+          <div><p class="record-title">${escapeHTML(d.food)} ${isUrgent(d) ? '<span class="pill urgent">Urgent</span>' : ""}</p>
+            <div class="record-meta"><span>${escapeHTML(d.category)}</span><span>${Number(d.quantity) || 0} portions</span><span>⌖ ${escapeHTML(d.location)}</span></div>
+            <p style="font-size:.86rem;margin:11px 0 0">Best match: <strong>${escapeHTML(best.ngo.name)}</strong></p>
+            <div class="match-reasons">${best.reasons.map(reason => `<span class="reason">${escapeHTML(reason)}</span>`).join("")}</div>
+            <p class="form-hint" style="margin:10px 0 0">Alternatives: ${escapeHTML(alternatives || "None")}</p>
+          </div><div class="match-score"><strong>${best.score}%</strong>simulated</div>
+        </article>`;
+      }).join("");
+    }
+    function renderAll() { renderDonor(); renderNGO(); renderVolunteer(); renderMatches(); }
+
+    document.getElementById("donationForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const preparedAt = new Date(data.get("preparedAt")).getTime();
+      const deadline = new Date(data.get("deadline")).getTime();
+      if (!Number.isFinite(preparedAt) || !Number.isFinite(deadline)) {
+        showNotice("donationNotice", "Enter valid preparation and pickup date/time values.", "error"); return;
+      }
+      if (preparedAt > Date.now()) {
+        showNotice("donationNotice", "Preparation date and time cannot be in the future.", "error"); return;
+      }
+      if (deadline <= Date.now()) {
+        showNotice("donationNotice", "Pickup deadline must be in the future.", "error"); return;
+      }
+      const donation = {
+        id: "donation-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+        donor: String(data.get("donorName")).trim(), food: String(data.get("foodName")).trim(),
+        category: String(data.get("category")), quantity: Number(data.get("quantity")),
+        preparedAt: new Date(preparedAt).toISOString(), location: String(data.get("location")).trim(),
+        deadline: new Date(deadline).toISOString(), contact: String(data.get("contact")).trim(),
+        status: "available", sample: false
+      };
+      state.donations.push(donation);
+      if (!saveState()) { state.donations.pop(); return; }
+      form.reset();
+      showNotice("donationNotice", "Donation listed. NGOs can now see it in Find food.", "success");
+      renderAll();
+      showToast("Your food listing is now available to NGOs.");
+    });
+
+    document.getElementById("ngoIdentity").addEventListener("input", event => {
+      activeName = event.target.value.trim() || "Community NGO";
+      renderNGO();
+    });
+    document.getElementById("volunteerIdentity").addEventListener("input", event => {
+      activeName = event.target.value.trim() || "Community Volunteer";
+      renderVolunteer();
+    });
+    document.addEventListener("click", event => {
+      const requestButton = event.target.closest("[data-request]");
+      if (requestButton) {
+        const donation = state.donations.find(d => d.id === requestButton.dataset.request);
+        if (!donation || donation.status !== "available" || donation.request) {
+          showToast("This donation is no longer available.", "error"); renderAll(); return;
+        }
+        const ngoName = document.getElementById("ngoIdentity").value.trim() || "Community NGO";
+        const previous = donation.request;
+        donation.request = { ngo: ngoName, status: "Pending", requestedAt: new Date().toISOString() };
+        donation.status = "requested";
+        state.tasks.push({ id: "task-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6), donationId: donation.id, destination: ngoName, volunteer: "", status: "" });
+        if (!saveState()) {
+          donation.request = previous;
+          donation.status = "available";
+          state.tasks.pop();
+          return;
+        }
+        renderAll(); showToast("Request recorded. The listing is no longer available to other NGOs.");
+      }
+      const acceptButton = event.target.closest("[data-accept]");
+      if (acceptButton) {
+        const task = state.tasks.find(item => item.id === acceptButton.dataset.accept);
+        if (!task || task.volunteer) { showToast("This task has already been accepted.", "error"); renderAll(); return; }
+        const name = document.getElementById("volunteerIdentity").value.trim() || "Community Volunteer";
+        task.volunteer = name; task.status = taskSteps[0];
+        if (!saveState()) { task.volunteer = ""; task.status = ""; return; }
+        activeName = name; renderAll(); showToast("Task accepted. Update its progress as the demo proceeds.");
+      }
+      const advanceButton = event.target.closest("[data-advance]");
+      if (advanceButton) {
+        const task = state.tasks.find(item => item.id === advanceButton.dataset.advance);
+        if (!task || task.volunteer !== activeName) { showToast("This task is not assigned to this volunteer.", "error"); return; }
+        const next = taskSteps[taskSteps.indexOf(task.status) + 1];
+        if (!next) return;
+        const previous = task.status; task.status = next;
+        if (!saveState()) { task.status = previous; return; }
+        renderAll();
+        showToast(next === "Delivered" ? "Demo status updated to Delivered. This is not a real-world delivery confirmation." : `Task status updated: ${next}.`);
+      }
+    });
+
+    document.getElementById("contactForm").addEventListener("submit", event => {
+      event.preventDefault();
+      if (!event.currentTarget.reportValidity()) return;
+      showNotice("contactNotice", "Thanks for reaching out! This demo form does not send messages to a server.", "success");
+      event.currentTarget.reset();
+    });
+    function openAuth(mode) {
+      authMode = mode;
+      document.getElementById("authTitle").textContent = mode === "login" ? "Welcome back" : "Join the community";
+      document.getElementById("authDescription").textContent = mode === "login" ? "Choose your demo role to open its dashboard." : "Choose a role to open the matching dashboard.";
+      document.getElementById("authNameField").style.display = mode === "login" ? "none" : "flex";
+      document.getElementById("authName").required = mode !== "login";
+      document.getElementById("authSubmit").textContent = mode === "login" ? "Continue to dashboard" : "Create demo profile";
+      document.getElementById("authModal").classList.add("open");
+      document.getElementById("authEmail").focus();
+    }
+    function closeAuth() { document.getElementById("authModal").classList.remove("open"); }
+    document.querySelectorAll("[data-auth]").forEach(button => button.addEventListener("click", () => openAuth(button.dataset.auth)));
+    document.getElementById("closeAuth").addEventListener("click", closeAuth);
+    document.getElementById("authModal").addEventListener("click", event => { if (event.target.id === "authModal") closeAuth(); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") closeAuth(); });
+    document.getElementById("authForm").addEventListener("submit", event => {
+      event.preventDefault();
+      if (!event.currentTarget.reportValidity()) return;
+      const role = document.getElementById("authRole").value;
+      const email = document.getElementById("authEmail").value.trim();
+      const fallbackName = role === "donor" ? "Food Donor" : role === "ngo" ? "Community NGO" : "Community Volunteer";
+      activeName = (authMode === "register" ? document.getElementById("authName").value.trim() : "") || fallbackName;
+      activeRole = role;
+      if (role === "ngo") document.getElementById("ngoIdentity").value = activeName;
+      if (role === "volunteer") document.getElementById("volunteerIdentity").value = activeName;
+      closeAuth();
+      const panel = role === "donor" ? "donorPanel" : role === "ngo" ? "ngoPanel" : "volunteerPanel";
+      setDashboard(panel);
+      document.getElementById("donate").scrollIntoView({ behavior: "smooth" });
+      showToast(`${activeName} · ${roleLabel(role)} demo dashboard opened (${email}).`);
+    });
+    function roleLabel(role) { return role === "ngo" ? "NGO" : role === "donor" ? "Food donor" : "Volunteer"; }
+
+    function setDashboard(panelId) {
+      document.querySelectorAll(".dash-tab").forEach(tab => {
+        const selected = tab.dataset.panel === panelId;
+        tab.classList.toggle("active", selected);
+        tab.setAttribute("aria-selected", String(selected));
+      });
+      document.querySelectorAll(".dash-panel").forEach(panel => panel.classList.toggle("active", panel.id === panelId));
+    }
+    document.querySelectorAll(".dash-tab").forEach(tab => tab.addEventListener("click", () => setDashboard(tab.dataset.panel)));
+
+    const menuToggle = document.getElementById("menuToggle");
+    menuToggle.addEventListener("click", () => {
+      const nav = document.getElementById("mainNav");
+      const open = nav.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    });
+    document.querySelectorAll("#mainNav a").forEach(link => link.addEventListener("click", () => {
+      document.getElementById("mainNav").classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }));
+    document.querySelectorAll('a[href="#find"]').forEach(link => link.addEventListener("click", () => setDashboard("ngoPanel")));
+    document.querySelectorAll('a[href="#donate"]').forEach(link => link.addEventListener("click", () => setDashboard("donorPanel")));
+
+    if (state.storageError) showToast("Saved data could not be read; showing temporary sample listings.", "error");
+    renderAll();
+    setDashboard("donorPanel");
+  </script>
+</body>
+</html>
